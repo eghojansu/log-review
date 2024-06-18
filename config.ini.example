@@ -1,4 +1,6 @@
 extensions = log, txt
+username = admin
+password = admin
 
 [directories]
 test = /path/to/directories,custom-extensions,separated-by-comma

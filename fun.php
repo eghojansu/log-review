@@ -51,6 +51,23 @@ function with_config(Closure|string $key = null): mixed {
     return $key ? $key($config ?? array()) : $config ?? array();
 }
 
+function authenticated() {
+    return with_config(fn(array $config) => (
+        isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])
+        && 0 === strcmp($config['username'], $_SERVER['PHP_AUTH_USER'])
+        && 0 === strcmp($config['password'], $_SERVER['PHP_AUTH_PW'])
+    ));
+}
+
+function guard() {
+    if (!authenticated()) {
+        header('WWW-Authenticate: Basic realm="Protected area"');
+        header('HTTP/1.0 401 Unauthorized');
+
+        exit('Please enter your credentials.');
+    }
+}
+
 function file_real(string|null $name, string|null $file): string|null {
     return with_config(
         fn(array $config) => (

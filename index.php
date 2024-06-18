@@ -3,6 +3,8 @@ define('CONFIG_FILE', __DIR__ . '/config.ini');
 
 include __DIR__ . '/fun.php';
 
+guard();
+
 $open = $_GET['dir'] ?? null;
 $read = $_GET['file'] ?? null;
 $move = $_GET['move'] ?? null;
