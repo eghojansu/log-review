@@ -10,6 +10,7 @@ $read = $_GET['file'] ?? null;
 $move = $_GET['move'] ?? null;
 $confirm = $_GET['confirm'] ?? null;
 $deleted = $_GET['deleted'] ?? null;
+$perPage = max(10, min(50, intval($_GET['size'] ?? 20)));
 $file = file_real($open, $read);
 
 if ($file && $move && $newFile = file_cursor($open, $read, $move)) {
@@ -50,27 +51,33 @@ $fileContent = $file ? htmlspecialchars(file_get_contents($file)) : null;
   <div class="row">
     <div class="col file-list">
       <p>Directories:</p>
+      <p>
+        Pages
+        <?php foreach (range(10, 50, 10) as $size): ?>
+          | <a href="<?php echo url(array('dir' => $open, 'size' => $size)) ?>" <?php echo $size == $perPage ? 'class="open"' : null ?>><?php echo $size ?></a>
+        <?php endforeach ?>
+      </p>
       <ul>
-        <?php foreach (with_config('directories') as $dirName => $_): ?>
+        <?php foreach (file_list($open, $read, $perPage) as $item): ?>
           <li>
-            <a href="?dir=<?php echo $dirName?>"><?php echo $dirName ?></a>
+            <a href="<?php echo url(array('dir' => $item['name'], 'size' => $perPage)) ?>"><?php echo $item['name'] ?> (<?php echo $item['info'] ?>)</a>
 
-            <?php if ($dirName === $open): ?>
-              <ul>
-                <?php foreach (files_from($dirName) as $fileName => $filePath): ?>
-                  <li>
-                    <a href="?dir=<?php echo $dirName?>&file=<?php echo $fileName ?>" title="<?php echo $fileName ?>" <?php echo $fileName == $read ? 'class="open"' : null ?>><?php echo display_name($fileName, 18) ?></a>
-                  </li>
-                <?php endforeach ?>
+            <ul>
+              <?php foreach ($item['files'] as $fileName => $filePath): ?>
+                <li>
+                  <a href="<?php echo url(array('dir' => $item['name'], 'file' => $fileName, 'size' => $perPage)) ?>" title="<?php echo $fileName ?>" <?php echo $fileName == $read ? 'class="open"' : null ?>><?php echo display_name($fileName, 18) ?></a>
+                </li>
+              <?php endforeach ?>
 
-                <?php if (empty($fileName)): ?>
-                  <li><em>No files</em></li>
-                <?php endif ?>
-              </ul>
-            <?php endif ?>
+              <?php if (empty($item['files'])): ?>
+                <li><em>No files</em></li>
+              <?php endif ?>
+            </ul>
           </li>
         <?php endforeach ?>
       </ul>
+      <br>
+      <br>
     </div>
     <div class="col">
       <?php if ($deleted): ?>
@@ -79,7 +86,7 @@ $fileContent = $file ? htmlspecialchars(file_get_contents($file)) : null;
         </div>
       <?php endif ?>
       <?php if ($file): ?>
-        <div class="file-control">
+        <div class="file-control" data-current="<?php echo $read ?>">
           <button type="button" data-action="delete">Delete</button>
           <label><input type="checkbox" <?php echo $confirm ? 'checked' : null ?>> Confirm deletion</label>
           <button type="button" data-action="prev">Prev</button>

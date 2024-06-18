@@ -113,6 +113,43 @@ function file_cursor(string $name, string $file, string $move): string|null {
     return $add ? $keys[$found + $add] : null;
 }
 
+function file_list(string|null $open, string|null $file, int $perPage = 20): array {
+    return array_map(
+        function(string $name) use ($open, $file, $perPage) {
+            $files = $name === $open ? files_from($name) : array();
+            $total = count($files);
+            $pages = ceil($total / $perPage);
+            $page = 0;
+            $start = 0;
+            $from = 0;
+            $to = 0;
+
+            if ($files) {
+                $keys = array_keys($files);
+                $pos = array_search($file, $keys);
+                $page = ceil(($pos + 1) / $perPage);
+                $start = ($page - 1) * $perPage;
+                $from = $start + 1;
+                $to = min($total, $start + $perPage);
+            }
+
+            return array(
+                'name' => $name,
+                'total' => $total,
+                'pages' => $pages,
+                'page' => $page,
+                'files' => array_slice($files, $start, $perPage),
+                'info' => $files ? "({$page}) {$from}-{$to} of {$total}" : null,
+            );
+        },
+        array_keys(with_config('directories')),
+    );
+}
+
+function url(array $args): string {
+    return '?' . http_build_query($args);
+}
+
 // pure
 
 function fixslash(string $txt): string {

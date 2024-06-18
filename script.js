@@ -14,8 +14,8 @@ const update = params => {
   window.location = `?${q}`
 }
 const handlers = {
-  next: () => update({ move: 'next' }),
-  prev: () => update({ move: 'prev' }),
+  next: event => update({ move: 'next', file: event.target.closest('[data-current]')?.dataset.current }),
+  prev: event => update({ move: 'prev', file: event.target.closest('[data-current]')?.dataset.current }),
   delete: () => {
     const confirmEl = document.querySelector('input[type=checkbox]')
     const doDelete = async () => {
