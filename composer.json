@@ -1,0 +1,14 @@
+{
+    "name": "ekokurniawan/log-review",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Eko Kurniawan",
+            "email": "ekokurniawanbs@gmail.com",
+            "role": "developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    }
+}

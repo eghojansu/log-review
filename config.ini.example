@@ -1,0 +1,4 @@
+extensions = log, txt
+
+[directories]
+test = /path/to/directories,custom-extensions,separated-by-comma

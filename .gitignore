@@ -1,0 +1,4 @@
+/var/
+config.ini
+config.ini.*
+!config.ini.example
