@@ -1,6 +1,6 @@
 <?php
 define('CONFIG_FILE', __DIR__ . '/config.ini');
-define('RELEASE_VERSION', 'v20240618152200');
+define('RELEASE_VERSION', 'v20240618153100');
 
 include __DIR__ . '/fun.php';
 
@@ -11,6 +11,7 @@ $read = $_GET['file'] ?? null;
 $move = $_GET['move'] ?? null;
 $confirm = $_GET['confirm'] ?? null;
 $deleted = $_GET['deleted'] ?? null;
+$success = $_GET['success'] ?? null;
 $perPage = max(10, min(50, intval($_GET['size'] ?? 20)));
 $file = file_real($open, $read);
 
@@ -23,13 +24,13 @@ if ('DELETE' === ($_SERVER['REQUEST_METHOD'])) {
   header('Content-Type: application/json');
 
   $result = array(
-    'message' => 'File could not be deleted',
+    'success' => 0,
     'next' => file_cursor($open, $read, 'next'),
+    'deleted' => $read,
   );
 
   if (is_writable($file) && unlink($file)) {
-    $result['message'] = 'File has been removed';
-    $result['deleted'] = $read;
+    $result['success'] = 1;
   }
 
   echo json_encode($result);
@@ -83,7 +84,7 @@ $fileContent = $file ? htmlspecialchars(file_get_contents($file)) : null;
     <div class="col">
       <?php if ($deleted): ?>
         <div class="deleted">
-          File has been deleted: <?php echo $deleted ?>
+          File delete: <?php echo $deleted ?> (<?php echo 1 == $success ? 'Success' : 'Failed' ?>)
         </div>
       <?php endif ?>
       <?php if ($file): ?>

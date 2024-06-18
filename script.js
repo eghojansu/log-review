@@ -25,7 +25,7 @@ const handlers = {
         })
         const result = await response.json()
 
-        update({ file: result.next || '', deleted: result.deleted || '', confirm: confirmEl?.checked ? 1 : 0 })
+        update({ success: result.success || '0', file: result.next || '', deleted: result.deleted || '', confirm: confirmEl?.checked ? 1 : 0 })
       } catch (e) {
         alert(e.message)
       }
