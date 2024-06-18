@@ -1,5 +1,6 @@
 <?php
 define('CONFIG_FILE', __DIR__ . '/config.ini');
+define('RELEASE_VERSION', 'v20240618152200');
 
 include __DIR__ . '/fun.php';
 
@@ -26,7 +27,7 @@ if ('DELETE' === ($_SERVER['REQUEST_METHOD'])) {
     'next' => file_cursor($open, $read, 'next'),
   );
 
-  if (@unlink($file)) {
+  if (is_writable($file) && unlink($file)) {
     $result['message'] = 'File has been removed';
     $result['deleted'] = $read;
   }
@@ -44,8 +45,8 @@ $fileContent = $file ? htmlspecialchars(file_get_contents($file)) : null;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Log Review</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css?<?php echo RELEASE_VERSION ?>">
+  <script src="script.js?<?php echo RELEASE_VERSION ?>"></script>
 </head>
 <body>
   <div class="row">
