@@ -3,6 +3,11 @@ document.addEventListener('click', event => {
     handlers[event.target.dataset.action](event)
   }
 })
+document.addEventListener('keypress', event => {
+  if (event.key == 'Enter' && event.target.closest('#txt-search')) {
+    update({ search: event.target.value })
+  }
+})
 
 const update = params => {
   const q = new URLSearchParams(window.location.search)

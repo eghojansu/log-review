@@ -113,10 +113,15 @@ function file_cursor(string $name, string $file, string $move): string|null {
     return $add ? $keys[$found + $add] : null;
 }
 
-function file_list(string|null $open, string|null $file, int $perPage = 20): array {
+function file_list(string|null $open, string|null $file, string|null $search, int $perPage = 20): array {
     return array_map(
-        function(string $name) use ($open, $file, $perPage) {
+        function(string $name) use ($open, $file, $search, $perPage) {
             $files = $name === $open ? files_from($name) : array();
+
+            if ($search) {
+                $files = array_filter($files, fn($file) => str_contains($file, $search), ARRAY_FILTER_USE_KEY);
+            }
+
             $total = count($files);
             $pages = ceil($total / $perPage);
             $page = 0;

@@ -32,10 +32,7 @@ body {
   border-bottom: solid 1px #777;
 }
 .file-control [data-action] {
-  margin-right: 10px;
-}
-.file-control label {
-  margin-right: auto;
+  margin-right: 15px;
 }
 .open {
   font-weight: bold;

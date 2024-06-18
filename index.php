@@ -1,6 +1,6 @@
 <?php
 define('CONFIG_FILE', __DIR__ . '/config.ini');
-define('RELEASE_VERSION', 'v20240618153100');
+define('RELEASE_VERSION', 'v20240618154100');
 
 include __DIR__ . '/fun.php';
 
@@ -12,6 +12,7 @@ $move = $_GET['move'] ?? null;
 $confirm = $_GET['confirm'] ?? null;
 $deleted = $_GET['deleted'] ?? null;
 $success = $_GET['success'] ?? null;
+$search = $_GET['search'] ?? null;
 $perPage = max(10, min(50, intval($_GET['size'] ?? 20)));
 $file = file_real($open, $read);
 
@@ -54,20 +55,23 @@ $fileContent = $file ? htmlspecialchars(file_get_contents($file)) : null;
     <div class="col file-list">
       <p>Directories:</p>
       <p>
+        Search <input type="text" value="<?php echo htmlspecialchars($search) ?>" id="txt-search">
+      </p>
+      <p>
         Pages
         <?php foreach (range(10, 50, 10) as $size): ?>
-          | <a href="<?php echo url(array('dir' => $open, 'size' => $size)) ?>" <?php echo $size == $perPage ? 'class="open"' : null ?>><?php echo $size ?></a>
+          | <a href="<?php echo url(array('dir' => $open, 'size' => $size, 'search' => $search)) ?>" <?php echo $size == $perPage ? 'class="open"' : null ?>><?php echo $size ?></a>
         <?php endforeach ?>
       </p>
       <ul>
-        <?php foreach (file_list($open, $read, $perPage) as $item): ?>
+        <?php foreach (file_list($open, $read, $search, $perPage) as $item): ?>
           <li>
-            <a href="<?php echo url(array('dir' => $item['name'], 'size' => $perPage)) ?>"><?php echo $item['name'] ?> (<?php echo $item['info'] ?>)</a>
+            <a href="<?php echo url(array('dir' => $item['name'], 'size' => $perPage, 'search' => $search)) ?>"><?php echo $item['name'] ?> (<?php echo $item['info'] ?>)</a>
 
             <ul>
               <?php foreach ($item['files'] as $fileName => $filePath): ?>
                 <li>
-                  <a href="<?php echo url(array('dir' => $item['name'], 'file' => $fileName, 'size' => $perPage)) ?>" title="<?php echo $fileName ?>" <?php echo $fileName == $read ? 'class="open"' : null ?>><?php echo display_name($fileName, 18) ?></a>
+                  <a href="<?php echo url(array('dir' => $item['name'], 'file' => $fileName, 'size' => $perPage, 'search' => $search)) ?>" title="<?php echo $fileName ?>" <?php echo $fileName == $read ? 'class="open"' : null ?>><?php echo display_name($fileName, 18) ?></a>
                 </li>
               <?php endforeach ?>
 
@@ -89,10 +93,10 @@ $fileContent = $file ? htmlspecialchars(file_get_contents($file)) : null;
       <?php endif ?>
       <?php if ($file): ?>
         <div class="file-control" data-current="<?php echo $read ?>">
-          <button type="button" data-action="delete">Delete</button>
-          <label><input type="checkbox" <?php echo $confirm ? 'checked' : null ?>> Confirm deletion</label>
           <button type="button" data-action="prev">Prev</button>
           <button type="button" data-action="next">Next</button>
+          <button type="button" data-action="delete">Delete</button>
+          <label><input type="checkbox" <?php echo $confirm ? 'checked' : null ?>> Confirm deletion</label>
         </div>
         <p><em><?php echo $file ?></em></p>
         <div class="file-content">
