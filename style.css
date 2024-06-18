@@ -23,6 +23,7 @@ body {
   word-break: break-all;
   overflow-y: auto;
   max-height: 80vh;
+  white-space: pre;
 }
 .file-control {
   display: flex;
