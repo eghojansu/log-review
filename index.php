@@ -26,7 +26,7 @@ if ('DELETE' === ($_SERVER['REQUEST_METHOD'])) {
     'next' => file_cursor($open, $read, 'next'),
   );
 
-  if (unlink($file)) {
+  if (@unlink($file)) {
     $result['message'] = 'File has been removed';
     $result['deleted'] = $read;
   }
