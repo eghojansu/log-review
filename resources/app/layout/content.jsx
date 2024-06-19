@@ -7,7 +7,10 @@ export default ({
   } = {},
   filesChecked = false,
   filesCheckeds = [],
+  fileRead,
   message,
+  loading,
+  reviewCheck = true,
   doubleCheck = true,
   deleting,
   directoryList = [],
@@ -22,6 +25,7 @@ export default ({
   } = {},
   sizes = [10, 15, 20, 30, 40, 50],
   size = 15,
+  onReviewCheck = () => {},
   onDoubleCheck = () => {},
   onMessageClose = () => {},
   onPage = () => {},
@@ -64,10 +68,19 @@ export default ({
           />
         <span class="text-gray-700 ms-2">Confirm before delete</span>
       </label>
+      <label class="ms-3 inline-flex items-center">
+        <input
+          checked={reviewCheck}
+          onClick={onReviewCheck}
+          type="checkbox"
+          class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        <span class="text-gray-700 ms-2">Check while review</span>
+      </label>
     </div>
 
     <div class="flex gap-3 h-full">
-      <div class="w-6/12">
+      <div class="w-5/12">
         <table class="border-collapse border border-slate-400 w-full">
           <thead>
             <tr>
@@ -123,7 +136,10 @@ export default ({
           </div>
         </div>
       </div>
-      <div class="w-6/12 bg-slate-100 p-3 rounded">
+      <div class="w-7/12 bg-slate-100 p-3 rounded">
+        {loading && (
+          <p class="italic my-3">Loading file {fileRead}...</p>
+        )}
         {message && (
           <div class={`bg-yellow-300 p-3 rounded mb-5`}>
             <button type="button" onClick={onMessageClose} class="float-end rounded-full bg-slate-100 py-0.5 px-2">x</button>
@@ -131,7 +147,7 @@ export default ({
           </div>
         )}
         <p class="italic border-b pb-1 mb-1">{name || 'Please select any file.'}</p>
-        {content && <div class="overflow-y-auto">{content}</div>}
+        {content && <div class="overflow-y-auto break-all whitespace-pre max-h-96">{content}</div>}
       </div>
     </div>
   </div>

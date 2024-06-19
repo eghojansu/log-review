@@ -6,7 +6,9 @@ export default () => {
   const [app, appSet] = useState({
     page: 1,
     size: 15,
+    reviewCheck: true,
     doubleCheck: true,
+    fileRead: null,
     filesChecked: false,
     filesCheckeds: [],
   })
@@ -41,21 +43,25 @@ export default () => {
   const onDirectoryPrev = () => loadPage({ page: app.page - 1 })
   const onDirectoryNext = () => loadPage({ page: app.page + 1 })
   const onFile = async (_, { name }) => {
-    const file = await actionGet('file', name, {
-      directory: app.directoryActive,
-    })
-    let filesCheckeds = [...app.filesCheckeds]
+    if (name != app.fileRead) {
+      update({ loading: true, fileRead: name })
 
-    if (filesCheckeds.includes(name)) {
-      filesCheckeds = filesCheckeds.filter(check => check != name)
-    } else {
-      filesCheckeds = [...filesCheckeds, name]
+      const file = await actionGet('file', name, {
+        directory: app.directoryActive,
+      })
+
+      update({ loading: false, file })
     }
 
-    update({
-      file,
-      filesCheckeds,
-    })
+    if (app.reviewCheck) {
+      update({
+        filesCheckeds: (
+          app.filesCheckeds.includes(name) ?
+            app.filesCheckeds.filter(check => check != name) :
+            [...app.filesCheckeds, name]
+        )
+      })
+    }
   }
   const onDelete = async () => {
     if (app.doubleCheck && !confirm('Are you sure?')) {
@@ -85,6 +91,9 @@ export default () => {
   const onDoubleCheck = event => update({
     doubleCheck: !!event.target.checked,
   })
+  const onReviewCheck = event => update({
+    reviewCheck: !!event.target.checked,
+  })
 
   useEffect(() => {
     load()
@@ -105,6 +114,7 @@ export default () => {
         onDelete,
         onMessageClose,
         onDoubleCheck,
+        onReviewCheck,
       }} />
     </>
   )

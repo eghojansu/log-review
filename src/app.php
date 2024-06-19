@@ -3,6 +3,8 @@
 defined('PROJECT_DIR') || exit(0);
 
 function start(): void {
+    basic_guard();
+
     $route = strtolower(
         $_SERVER['REQUEST_METHOD'] . '_' . ($_GET['action'] ?? 'default')
     );
