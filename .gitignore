@@ -1,4 +1,5 @@
-/var/
+node_modules/
+var/
 config.ini
 config.ini.*
 !config.ini.example

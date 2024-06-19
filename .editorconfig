@@ -11,8 +11,9 @@ end_of_line = lf
 [*.php]
 insert_final_newline = true
 
-[*.{css,js}]
+[*.{css,js,jsx,sass}]
 indent_size = 2
+insert_final_newline = true
 
 [index.php]
 indent_size = 2

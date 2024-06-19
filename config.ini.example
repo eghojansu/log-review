@@ -1,6 +1,10 @@
 extensions = log, txt
 username = admin
 password = admin
+timezone = Asia/Jakarta
+
+[app]
+title = Log Review
 
 [directories]
 test = /path/to/directories,custom-extensions,separated-by-comma
