@@ -6,5 +6,9 @@ timezone = Asia/Jakarta
 [app]
 title = Log Review
 
+[vite]
+development = false
+host = http://localhost:5133
+
 [directories]
 test = /path/to/directories,custom-extensions,separated-by-comma

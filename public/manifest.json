@@ -1,0 +1,11 @@
+{
+  "resources/app/main.js": {
+    "file": "assets/main-JyanWMiv.js",
+    "name": "main",
+    "src": "resources/app/main.js",
+    "isEntry": true,
+    "css": [
+      "assets/main-C4-VLfl1.css"
+    ]
+  }
+}
