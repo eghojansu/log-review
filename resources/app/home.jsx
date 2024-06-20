@@ -68,7 +68,7 @@ export default () => {
       return
     }
 
-    update({ deleting: true })
+    update({ deleting: true, message: null })
 
     const result = await actionGet('delete', app.directoryActive, null, {
       files: app.filesCheckeds,
