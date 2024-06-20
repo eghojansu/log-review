@@ -6,6 +6,7 @@ export default () => {
   const [app, appSet] = useState({
     page: 1,
     size: 15,
+    sizes: [10, 15, 20, 30, 40, 50],
     search: '',
     reviewCheck: true,
     doubleCheck: true,
@@ -17,9 +18,13 @@ export default () => {
     /^o/.test(typeof key) ? key : { [key]: value }
   )}))
   const load = async () => {
-    const { directories: directoryList = [] } = (await actionGet('init')) || {}
+    const {
+      directories: directoryList = [],
+      size = app.size,
+      sizes = app.sizes,
+    } = (await actionGet('init')) || {}
 
-    update({ directoryList })
+    update({ directoryList, size, sizes })
   }
   const loadPage = async withUpdate => {
     update({ loadingList: true })

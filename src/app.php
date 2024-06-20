@@ -31,6 +31,8 @@ function loadInitials(): void {
     $config = with_config();
     $data = array(
         'directories' => array_keys($config['directories']),
+        'size' => intval($config['page_size'] ?? 10),
+        'sizes' => array_map('intval', to_array($config['page_sizes'] ?? '10,15,30,50,75,100')),
     );
 
     send_json($data);

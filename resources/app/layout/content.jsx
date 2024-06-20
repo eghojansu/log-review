@@ -93,7 +93,7 @@ export default ({
             </tr>
           </thead>
           <tbody>
-            {items.map(item => (
+            {!loadingList && items.map(item => (
               <tr key={item.name} onClick={event => onFile(event, item)}>
                 <td class="border border-slate-300 p-2">
                   <input type="checkbox" disabled={deleting} checked={filesCheckeds?.includes(item.name)} />
