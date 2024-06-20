@@ -10,6 +10,7 @@ export default ({
   fileRead,
   message,
   loading,
+  loadingList,
   reviewCheck = true,
   doubleCheck = true,
   deleting,
@@ -101,9 +102,18 @@ export default ({
                 <td class="border border-slate-300 p-2">{item.mtime}</td>
               </tr>
             ))}
-            {total < 1 && (
+            {!loadingList && total < 1 && (
               <tr>
-                <td colspan="3" class="italic border border-slate-300 p-2">No files</td>
+                <td colspan="3" class="italic border border-slate-300 p-2">
+                  No files
+                </td>
+              </tr>
+            )}
+            {loadingList && (
+              <tr>
+                <td colspan="3" class="italic border border-slate-300 p-2">
+                  Please wait...
+                </td>
               </tr>
             )}
           </tbody>
