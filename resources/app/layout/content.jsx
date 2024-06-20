@@ -85,7 +85,7 @@ export default ({
           <thead>
             <tr>
               <th class="border border-slate-300 p-2 w-px">
-                <input type="checkbox" checked={filesChecked} onClick={onFilesCheck} />
+                <input type="checkbox" disabled={deleting} checked={filesChecked} onClick={onFilesCheck} />
               </th>
               <th class="border border-slate-300 p-2">File</th>
               <th class="border border-slate-300 p-2">Last Modified</th>
@@ -95,7 +95,7 @@ export default ({
             {items.map(item => (
               <tr key={item.name} onClick={event => onFile(event, item)}>
                 <td class="border border-slate-300 p-2">
-                  <input type="checkbox" checked={filesCheckeds?.includes(item.name)} />
+                  <input type="checkbox" disabled={deleting} checked={filesCheckeds?.includes(item.name)} />
                 </td>
                 <td class="border border-slate-300 p-2">{item.name}</td>
                 <td class="border border-slate-300 p-2">{item.mtime}</td>
