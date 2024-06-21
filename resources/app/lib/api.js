@@ -18,6 +18,6 @@ export const actionGet = async (action, value, args, payload) => {
 
     return data
   } catch (e) {
-    return null
+    alert(`Request error: ${e.message}`)
   }
 }
