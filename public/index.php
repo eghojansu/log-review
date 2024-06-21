@@ -2,10 +2,7 @@
 define('PROJECT_DIR', realpath(__DIR__ . '/..'));
 define('PUBLIC_DIR', realpath(__DIR__));
 
-require PROJECT_DIR . '/src/fun.php';
-require PROJECT_DIR . '/src/app.php';
-
-start();
+require PROJECT_DIR . '/src/bootstrap.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
